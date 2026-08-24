@@ -1,12 +1,10 @@
 import { ArrowDown, CalendarDots, Code } from "@phosphor-icons/react/dist/ssr";
-import { Event, connectToDatabase } from "@/database";
+import Link from "next/link";
 import EventCard from "@/components/EventCard";
-
-export const dynamic = "force-dynamic";
+import { getEvents } from "@/lib/actions/event.actions";
 
 export default async function Home() {
-  await connectToDatabase();
-  const events = await Event.find().sort({ date: 1 }).lean();
+  const events = await getEvents();
 
   return (
     <div className="relative z-10 min-h-screen bg-[#030708]/80">
@@ -21,7 +19,7 @@ export default async function Home() {
           <ul>
             <li><a href="#home" className="text-sm text-light-100 transition hover:text-blue">Home</a></li>
             <li><a href="#events" className="text-sm text-light-100 transition hover:text-blue">Events</a></li>
-            <li><a href="/events/create" className="text-sm text-light-100 transition hover:text-blue">Create Event</a></li>
+            <li><Link href="/events/create" className="text-sm text-light-100 transition hover:text-blue">Create Event</Link></li>
           </ul>
         </nav>
       </header>

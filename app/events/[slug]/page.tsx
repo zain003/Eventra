@@ -1,21 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowLeft, CalendarBlank, Clock, MapPin } from "@phosphor-icons/react/dist/ssr";
 import { notFound } from "next/navigation";
-import { connectToDatabase, Event } from "@/database";
 import EventCard from "@/components/EventCard";
-import { getSimilarEvents } from "@/lib/actions/event.actions";
-
-export const dynamic = "force-dynamic";
+import { getEventBySlug, getSimilarEvents } from "@/lib/actions/event.actions";
 
 type EventPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function EventPage({ params }: EventPageProps) {
+function EventLoading() {
+  return <main className="relative z-10 min-h-screen bg-[#030708]/80" />;
+}
+
+export default function EventPage({ params }: EventPageProps) {
+  return (
+    <Suspense fallback={<EventLoading />}>
+      <EventDetails params={params} />
+    </Suspense>
+  );
+}
+
+async function EventDetails({ params }: EventPageProps) {
   const { slug } = await params;
-  await connectToDatabase();
-  const event = await Event.findOne({ slug }).lean();
+  const event = await getEventBySlug(slug);
 
   if (!event) {
     notFound();

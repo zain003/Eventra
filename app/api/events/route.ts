@@ -1,15 +1,13 @@
 import { connectToDatabase, Event } from "@/database";
+import { getEvents, revalidateEventCaches } from "@/lib/actions/event.actions";
 import { createEventSchema } from "@/lib/validations/event";
-
-export const runtime = "nodejs";
 
 const isDuplicateKeyError = (error: unknown): boolean =>
 	typeof error === "object" && error !== null && "code" in error && error.code === 11000;
 
 export async function GET() {
 	try {
-		await connectToDatabase();
-		const events = await Event.find().sort({ date: 1 }).lean();
+		const events = await getEvents();
 
 		return Response.json({ events });
 	} catch (error: unknown) {
@@ -28,6 +26,7 @@ export async function POST(request: Request) {
 
 		await connectToDatabase();
 		const event = await Event.create(parsedEvent.data);
+		await revalidateEventCaches(event.slug);
 
 		return Response.json({ event }, { status: 201 });
 	} catch (error: unknown) {
