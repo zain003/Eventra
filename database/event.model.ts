@@ -93,6 +93,18 @@ const eventSchema = new Schema<EventDocument>(
 
 eventSchema.index({ slug: 1 }, { unique: true });
 
+eventSchema.pre("validate", function () {
+  // Populate the required slug before Mongoose runs required-field validation.
+  if (this.isNew || this.isModified("title")) {
+    const slug = slugify(this.title);
+    if (!slug) {
+      this.invalidate("slug", "title must contain letters or numbers to create a slug");
+      return;
+    }
+    this.slug = slug;
+  }
+});
+
 eventSchema.pre("save", async function () {
   const requiredFields: Array<keyof EventDocument> = [
     "title",

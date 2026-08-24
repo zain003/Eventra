@@ -256,6 +256,46 @@
     }
   }
 
+  .create-event-form {
+    @apply flex max-w-5xl flex-col gap-8;
+
+    .form-grid {
+      @apply grid gap-5 md:grid-cols-2;
+    }
+
+    label, fieldset {
+      @apply flex flex-col gap-2 text-sm font-medium text-light-100;
+    }
+
+    textarea {
+      @apply resize-y;
+    }
+
+    small, .form-error {
+      @apply text-sm text-red-300;
+    }
+
+    .form-list {
+      @apply grid gap-5 md:grid-cols-2;
+    }
+
+    fieldset {
+      @apply gap-3 rounded-lg border border-white/10 bg-dark-100 p-5;
+    }
+
+    legend {
+      @apply px-1 font-schibsted-grotesk text-lg font-bold text-light-100;
+    }
+
+    fieldset button {
+      @apply w-fit cursor-pointer text-sm text-blue hover:underline;
+    }
+
+    .submit-event {
+      @apply w-fit cursor-pointer rounded-[6px] bg-blue px-6 py-3 font-semibold text-black transition hover:bg-blue/80 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+  }
+
   .pill {
     @apply bg-dark-100 text-light-100 text-xs rounded-[6px] px-5 py-2;
   }
