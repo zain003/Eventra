@@ -256,6 +256,14 @@
     }
   }
 
+  .similar-events {
+    @apply mt-20 border-t border-white/10 pt-12;
+
+    h2 {
+      @apply font-schibsted-grotesk text-2xl font-bold;
+    }
+  }
+
   .create-event-form {
     @apply flex max-w-5xl flex-col gap-8;
 

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowLeft, CalendarBlank, Clock, MapPin } from "@phosphor-icons/react/dist/ssr";
 import { notFound } from "next/navigation";
 import { connectToDatabase, Event } from "@/database";
+import EventCard from "@/components/EventCard";
+import { getSimilarEvents } from "@/lib/actions/event.actions";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,7 @@ export default async function EventPage({ params }: EventPageProps) {
     notFound();
   }
 
+  const similarEvents = await getSimilarEvents(event.slug, event.tags);
   const formattedDate = new Date(event.date).toLocaleDateString("en-US", {
     dateStyle: "long",
   });
@@ -75,6 +78,20 @@ export default async function EventPage({ params }: EventPageProps) {
             </div>
           </aside>
         </div>
+
+        {similarEvents.length > 0 && (
+          <section className="similar-events" aria-labelledby="similar-events-heading">
+            <div className="mb-8">
+              <p className="mb-2 font-martian-mono text-[10px] uppercase tracking-[0.18em] text-blue">You may also like</p>
+              <h2 id="similar-events-heading">Similar events</h2>
+            </div>
+            <div className="events">
+              {similarEvents.map((similarEvent) => (
+                <EventCard key={similarEvent.slug} event={similarEvent} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );
