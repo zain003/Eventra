@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Martian_Mono, JetBrains_Mono } from "next/font/google";
+import { Manrope, Martian_Mono } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import LightRays from "@/components/LightRays";
+import CardNav from "@/components/CardNav";
 
-const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
-
-const schibstedGrotesk = Schibsted_Grotesk({
-  variable: "--font-schibsted-grotesk",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
 
@@ -23,33 +20,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={cn("h-full", "antialiased", schibstedGrotesk.variable, martianMono.variable, "font-mono", jetbrainsMono.variable)}
-    >
-
-      <body className="relative min-h-full flex flex-col" suppressHydrationWarning>
-        
-
-
-  <LightRays
-    className="absolute inset-0 z-0"
-    raysOrigin="top-center-offset"
-    raysColor="#5dfeca"
-    raysSpeed={0.5}
-    lightSpread={0.9}
-    rayLength={1.4}
-    followMouse={true}
-    mouseInfluence={0.02}
-    noiseAmount={0}
-    distortion={0.01}
-    
-    pulsating={false}
-    fadeDistance={1}
-    saturation={1}
-/>
-
-        {children}</body>
+    <html lang="en" className={`h-full ${manrope.variable} ${martianMono.variable}`}>
+      <body className="min-h-full bg-[#08070d] font-[var(--font-manrope)] text-[#f7f2e8] antialiased" suppressHydrationWarning>
+        <CardNav
+          logo="/icons/logo.png"
+          logoAlt="Eventra home"
+          items={[
+            { label: "Home", bgColor: "#1B1722", textColor: "#fff", links: [{ label: "Discover", href: "/#events", ariaLabel: "Discover events" }, { label: "Home", href: "/", ariaLabel: "Eventra home" }] },
+            { label: "Events", bgColor: "#2F293A", textColor: "#fff", links: [{ label: "Featured", href: "/#events", ariaLabel: "Featured events" }, { label: "Create event", href: "/events/create", ariaLabel: "Create event" }] },
+            { label: "Account", bgColor: "#2F293A", textColor: "#fff", links: [{ label: "My bookings", href: "/#events", ariaLabel: "My bookings" }, { label: "Profile", href: "/events/create", ariaLabel: "Profile" }] },
+          ]}
+          ease="power2.easeOut"
+          menuColor="#000000"
+          buttonBgColor="#111111"
+          buttonTextColor="#ffffff"
+          initialLoadAnimation={false}
+        />
+        <div className="page-shell">{children}</div>
+      </body>
     </html>
   );
 }
