@@ -78,6 +78,12 @@ export default function CardNav({
       const current = window.scrollY;
       const delta = current - lastScrollY.current;
 
+      if (isExpandedRef.current && delta > 0) {
+        timelineRef.current?.reverse();
+        isExpandedRef.current = false;
+        setIsExpanded(false);
+      }
+
       if (isExpandedRef.current || current < 16) {
         setIsHidden(false);
         lastScrollY.current = current;

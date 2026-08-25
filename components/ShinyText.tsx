@@ -3,6 +3,20 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, useMotionValue, useAnimationFrame, useTransform } from "motion/react";
 
+type ShinyTextProps = {
+  text: string;
+  disabled?: boolean;
+  speed?: number;
+  className?: string;
+  color?: string;
+  shineColor?: string;
+  spread?: number;
+  yoyo?: boolean;
+  pauseOnHover?: boolean;
+  direction?: "left" | "right";
+  delay?: number;
+};
+
 const ShinyText = ({
   text,
   disabled = false,
@@ -15,7 +29,7 @@ const ShinyText = ({
   pauseOnHover = false,
   direction = "left",
   delay = 0,
-}) => {
+}: ShinyTextProps) => {
   const [isPaused, setIsPaused] = useState(false);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);

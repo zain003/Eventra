@@ -1,7 +1,18 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, type ReactNode } from "react";
 import { motion, useMotionValue, useAnimationFrame, useTransform } from "motion/react";
+
+type GradientTextProps = {
+  children: ReactNode;
+  className?: string;
+  colors?: string[];
+  animationSpeed?: number;
+  showBorder?: boolean;
+  direction?: "horizontal" | "vertical" | "diagonal";
+  pauseOnHover?: boolean;
+  yoyo?: boolean;
+};
 
 export default function GradientText({
   children,
@@ -12,7 +23,7 @@ export default function GradientText({
   direction = "horizontal",
   pauseOnHover = false,
   yoyo = true,
-}) {
+}: GradientTextProps) {
   const [isPaused, setIsPaused] = useState(false);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
